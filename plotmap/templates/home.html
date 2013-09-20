@@ -6,7 +6,7 @@
 </head>
 <body>
 <div id="plotmap" style="width:1000px;height:600px;"></div>
-<input id="dataid" type="hidden" value="0"/>
+<input id="dataid" type="hidden" value="-1"/>
 <script>
 var lat={{data.lat}};
 var lang={{data.lang}};
@@ -14,6 +14,7 @@ var name='{{data.name}}';
 var myCenter=new google.maps.LatLng(lat,lang);
 myTrip1=[myCenter];
 myTrip2=[];
+myTrip3=[];
 var mapProp = {
   center:myCenter,
   zoom:10,
@@ -55,6 +56,7 @@ function plotnew(myTrip,myCenter,name,lat,lang)
 function plotmaps()
 	{
 		incr=document.getElementById("dataid").value;
+		
 		$.ajax({
        	       		url:'/ajax',
 			type: "POST",
@@ -65,10 +67,19 @@ function plotmaps()
 				else
 					{
 					item=JSON.parse(data);
-					document.getElementById("dataid").value=item['incr'];
-					x=new google.maps.LatLng(item['lat'],item['long']);
-					plotnew(myTrip1,x,item['name'],item['lat'],item['long']);
-					plotnew(myTrip2,x,item['name'],item['lat'],item['long']);
+					incr = parseInt(incr) + 1;
+					document.getElementById("dataid").value=incr;
+					var i =1
+					for(each in item){
+					x=new google.maps.LatLng(item[each]['lat'],item[each]['long']);
+					if(i == 1){myTrip1.push(x);path1(myTrip1,x,item[each]['name'],item[each]['lat'],item[each]['long'])}
+					if(i == 2){myTrip2.push(x);path1(myTrip2,x,item[each]['name'],item[each]['lat'],item[each]['long'])}
+					if(i == 3){myTrip3.push(x);path1(myTrip3,x,item[each]['name'],item[each]['lat'],item[each]['long'])}
+					i = i + 1;
+					}
+					//x=new google.maps.LatLng(item['lat'],item['long']);
+					//plotnew(myTrip1,x,item['name'],item['lat'],item['long']);
+					//plotnew(myTrip2,x,item['name'],item['lat'],item['long']);
 					}
 				}
 

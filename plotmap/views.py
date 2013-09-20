@@ -25,22 +25,49 @@ def getLocation(request,incr=0):
 		incr=request.POST.get('incr', False)
 		incr=int(incr)+1
 		id1=request.POST.get('id', False)
-	path1=path.objects.get(id=id1)
-	data=data=path1.pathid.all()
-	dic={}
-	len1=len(path1.pathid.all())
-	print len1
+	path1=path.objects.get(id=1)
+	path2=path.objects.get(id=2)
+	path3=path.objects.get(id=3)
+	#data=data=path1.pathid.all()
+	#dic={}
+	#len1=len(path1.pathid.all())
+	#print len1
 	lst=[]
-	if (incr < len1):
+	print incr
+	if (incr < len(path1.pathid.all())):
 		data=path1.pathid.all()[incr]
-		dic['id']=data.id
-		dic['incr']=incr
-		dic['name']=data.name
-		dic['lat']=float(data.lat)
-		dic['long']=float(data.lang)
-		return HttpResponse(json.dumps(dic))
+		dic1 = {}
+		dic1['id']=data.id
+		dic1['incr']=incr
+		dic1['name']=data.name
+		dic1['lat']=float(data.lat)
+		dic1['long']=float(data.lang)
+		lst.append(dic1)
 	else:
 		return HttpResponse("Finished")
+	if (incr < len(path2.pathid.all())):
+		data=path2.pathid.all()[incr]
+		dic2 = {}
+		dic2['id']=data.id
+		dic2['incr']=incr
+		dic2['name']=data.name
+		dic2['lat']=float(data.lat)
+		dic2['long']=float(data.lang)
+		lst.append(dic2)
+	if (incr < len(path3.pathid.all())):
+		data=path3.pathid.all()[incr]
+		dic3 = {}
+		dic3['id']=data.id
+		dic3['incr']=incr
+		dic3['name']=data.name
+		dic3['lat']=float(data.lat)
+		dic3['long']=float(data.lang)
+		lst.append(dic3)
+	print lst
+	return HttpResponse(json.dumps(lst))
+
+#	else:
+#		return HttpResponse("Finished")
 		
 		
 	
